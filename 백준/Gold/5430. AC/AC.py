@@ -1,8 +1,9 @@
-T = int(input())
+import sys
+T = int(sys.stdin.readline())
 for _ in range(T):
-    p = input()
-    n = int(input())
-    s = input()
+    p = sys.stdin.readline().rstrip()
+    n = int(sys.stdin.readline())
+    s = sys.stdin.readline().rstrip()
     if s == "[]":
         q=[]
     else:
@@ -25,5 +26,5 @@ for _ in range(T):
         print("error")
     else:
         print("["+','.join(ans)+']')
-    #print("error" if len(ans)==0 else (ans if b else ans[::-1]), sep='')
+
 

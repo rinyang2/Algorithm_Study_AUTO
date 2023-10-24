@@ -1,0 +1,1 @@
+print(sum((lambda x:sum([[x]*x for x in range(1,46)],[])[x[0]-1:x[1]])(list(map(int,input().split())))))

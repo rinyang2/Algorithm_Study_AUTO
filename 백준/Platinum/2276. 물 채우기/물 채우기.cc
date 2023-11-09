@@ -1,152 +1,107 @@
-#include <iostream>
-#include <vector>
-#include <queue>
+#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+#include<vector>
+#include<queue>
+#include<algorithm>
+#include<string>
+#include<cmath> // <-- ceil,floor,round
+#include<unordered_map>
+#include<stack>
+#define endl '\n'
+#include<set>
 using namespace std;
+int N, M;
+int map[300][300];
+struct node {
+	int i;
+	int j;
+	int cost;
+};
 
-const int MAX = 301;
-const int dy[] = { 1,-1,0,0 }, dx[] = { 0,0,1,-1 };
-int arr[MAX][MAX];
-int C, R;
-int completed[MAX][MAX] = { 0 };
-void input() {
-	cin >> C >> R;
-	for (int i = 0; i < R; i++) {
-		for (int j = 0; j < C; j++) {
-			cin >> arr[i][j];
-		}
-	}
-}
-void print(int arr[MAX][MAX]) {
-	for (int i = 0; i < R; i++) {
-		for (int j = 0; j < C; j++) {
-			cout << arr[i][j] << "\t";
-		}
-		cout << "\n";
-	}
-}
-
-struct coord {
-	int y;
-	int x;
-	bool operator<(coord c) const {
-		return arr[y][x] > arr[c.y][c.x];
+struct fun {
+	bool operator()(node left, node right) {
+		if (left.cost > right.cost)
+			return true;
+		else
+			return false;
 	}
 };
 
-bool canfill(int y, int x) {
-	bool all_lower = true;
-	bool one_lower = true;
-	int original = arr[y][x];
-	for (int i = 0; i < 4; i++) {
-		int yy = y + dy[i], xx = x + dx[i];
-		//범위 초과인 경우 물을 채울 수 없음
-		if (yy<0 or xx<0 or yy>=R or xx>=C)
-			return false;
-		int next = arr[yy][xx];
-		if (original <= next)
-			all_lower = false;
-		if (original > next)
-			one_lower = false;
-	}
-	if (all_lower) {
-		completed[y][x] = 1;
-		return false;
-	}
-	return one_lower;
-}
+priority_queue<node, vector<node>, fun>pq;
+unordered_map<int, int>uom;
+int answer;
+void floodfill(node now) {
+	int visited[300][300] = { 0, };
+	int i = now.i;
+	int j = now.j;
+	int cost = now.cost;
 
-int bfs(int y, int x) {
-	vector <coord> vv;
-	int meet_edge = 1;
-	//방문처리
-	int visited[MAX][MAX] = { 0 };
-	queue<coord> q;
-	visited[y][x] = 1;
-	q.push({ y,x });
-	vv.push_back({ y,x });
-	//시작 노드의 높이
-	int this_value = arr[y][x];
-	//같은 높이의 노드들을 탐색하며 인근 노드 중 가장 낮은 높이를 찾는다
-	int closest_min = INT32_MAX;
+	queue<node>q;
+	visited[i][j] = 1;
+	q.push({ i,j,0 });
+	int di[] = { 0,0,1,-1 };
+	int dj[] = { 1,-1,0,0 };
+
 	while (!q.empty()) {
-		coord t = q.front();
-		q.pop();
+		node a= q.front(); q.pop();
+		int ii = a.i;
+		int jj = a.j;
+		
+		for (int k = 0; k < 4; k++) {
+			int ni = di[k] + ii;
+			int nj = dj[k] + jj;
 
-		//현재 노드에서 상하좌우로 탐색한다
-		for (int i = 0; i < 4; i++) {
-			int yy = t.y + dy[i], xx = t.x + dx[i];
+			if (ni <= 0 or ni >= N - 1 or nj <= 0 or nj >= M - 1)
+				continue;
 			
-			//테두리를 마주한 경우 리턴
-			if (yy < 0 or xx < 0 or yy >= R or xx >= C) {
-				meet_edge = 0;
+			if (visited[ni][nj] == 1)
+				continue;
+			auto it = uom.find(ni*M + nj);
+			if (it == uom.end())
+				continue;
+
+			visited[ni][nj] = 1;
+			uom.erase(it->first);
+			if (map[ni][nj] >= cost) {
+				pq.push({ ni,nj,map[ni][nj] });
 				continue;
 			}
-			int next = arr[yy][xx];
-			//같은 높이인경우 queue에 넣고 탐색
-			if (this_value == next && visited[yy][xx] == 0) {
-				visited[yy][xx] = 1;
-				vv.push_back({ yy,xx });
-				q.push({ yy,xx });
-			}
-			//다른 높이인 경우 인근최소높이 갱신
-			else {
-				if (next < closest_min && next != this_value) {
-					closest_min = next;
-				}
-			}
-		}
-	}
-	int cnt = 0;
-	if (closest_min <= this_value) {
-		return 0;
-	}
-
-	if (meet_edge == 0) {
-		for (auto a : vv) {
-			completed[a.y][a.x] = 1;
-		}
-		return 0;
-	}
-	else {
-		for (auto a : vv) {
-			arr[a.y][a.x] = closest_min;
-			cnt+= closest_min - this_value;
+			answer += (cost - map[ni][nj]);
+			q.push({ ni,nj });
 		}
 	}
 
-	return cnt;
-}
 
-void fill() {
-	priority_queue <coord> pq;
-	//상하좌우가 모두 자기보다 같거나 높은 노드들을 push
-	for (int i = 0; i < R; i++) {
-		for (int j = 0; j < C; j++) {
-			if (canfill(i, j)) {
-				pq.push({ i,j});
-			}
-		}
-	}
-
-	int cnt = 0;
-	
-	while (!pq.empty()) {
-		coord temp = pq.top(); pq.pop();
-		if (completed[temp.y][temp.x] == 1)
-			continue;
-		int k = bfs(temp.y, temp.x);
-		if (k){
-			pq.push(temp);
-			cnt += k;
-			
-		}
-
-	}
-	cout << cnt;
 }
 
 int main() {
-	ios::sync_with_stdio(false); cin.tie(0);
-	input();
-	fill();
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	//freopen("input.txt", "r", stdin);
+
+	cin >> M >> N;
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			cin >> map[i][j];
+			if (i == 0 or j == 0 or i==N-1 or j==M-1) {
+				pq.push({ i,j,map[i][j] });
+			}
+			else
+				uom[i*M + j];
+		}
+	}
+	
+
+
+	while (!pq.empty()) {
+		node now = pq.top(); pq.pop();
+
+		floodfill({ now });
+
+	}
+
+	cout << answer;
+	return 0;
 }

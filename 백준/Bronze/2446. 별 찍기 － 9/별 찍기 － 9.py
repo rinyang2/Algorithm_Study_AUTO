@@ -1,0 +1,1 @@
+print(*(lambda y:y+y[::-1][1:])((lambda x: [' '*(x-i//2-1)+'*'*i for i in range(x*2-1, 0,-2)]+[])(int(input()))), sep='\n')

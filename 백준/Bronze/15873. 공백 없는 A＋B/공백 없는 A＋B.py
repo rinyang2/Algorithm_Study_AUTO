@@ -1,0 +1,1 @@
+print((lambda x:int(x[0])+int(x[1])if len(x)==2 else(20 if x=='1010' else (10+int(x[0])if x[2]=='0' else 10+int(x[2]))))(input()))

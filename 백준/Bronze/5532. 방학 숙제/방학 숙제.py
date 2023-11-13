@@ -1,0 +1,1 @@
+print((lambda arr: arr[0]-max(arr[1]//arr[3] + (0 if arr[1]%arr[3]==0 else 1),arr[2]//arr[4] + (0 if arr[2]%arr[4]==0 else 1)))([int(input())for _ in range(5)]))

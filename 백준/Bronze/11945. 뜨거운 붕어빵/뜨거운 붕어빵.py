@@ -1,0 +1,1 @@
+print(*(lambda x:[input()[::-1]for _ in range(x[0])])(list(map(int, input().split()))),sep='\n')

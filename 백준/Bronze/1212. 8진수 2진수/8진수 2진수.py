@@ -1,1 +1,1 @@
-print((lambda z:z[2:]if z[0]=='0' and z[1]=='0' else(z[1:]if z[0]=='0' else z))(''.join([(lambda y:'0'*(3-len(y))+y)(str(bin(int(x))[2:]))for x in input()])))
+print(bin(int(input(),8))[2:])

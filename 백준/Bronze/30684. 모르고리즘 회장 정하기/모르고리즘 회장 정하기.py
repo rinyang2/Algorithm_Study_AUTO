@@ -1,0 +1,1 @@
+print(sorted([(lambda x:x if len(x)==3 else 'zzzz')(input()) for _ in range(int(input()))])[0])

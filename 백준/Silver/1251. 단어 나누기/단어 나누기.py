@@ -1,0 +1,1 @@
+print((lambda x:sorted(sum([[x[:i][::-1]+x[i:i+j][::-1]+x[i+j:][::-1]for j in range(1,len(x[i:]))]for i in range(1,len(x))],[]))[0])(input()))

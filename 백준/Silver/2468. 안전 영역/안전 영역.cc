@@ -1,64 +1,68 @@
+//you suck's code
 #include <iostream>
 #include <vector>
-#include <algorithm>
-#include <unordered_set>
 #include <queue>
-#define endl '\n'
+
 using namespace std;
 
-const int dy[]={1,-1,0,0}, dx[]={0,0,1,-1};
-struct coord{
-    int y,x;
+int dy[4] = { -1,1,0,0 };
+int dx[4] = { 0,0,-1,1 };
+int N;
+int arr[100][100] = { 0, };
+int visited[100][100] = { 0, };
+struct Node {
+    int y, x;
 };
-
-int bfs(vector<vector<int>> &v,int n){
-    int cnt = 0;
-    int N = v.size();
-    vector<vector<int>> visited(N);
-    for(int i = 0 ; i<N ; i++){
-        visited[i].resize(N);
-    }
-    for(int i = 0;i<N;i++){
-        for(int j =0 ;j<N; j++){
-            if (v[i][j]>n && visited[i][j]==0){
-                cnt++;
-                queue<coord>q;
-                visited[i][j]=1;
-                q.push({i,j});
-                while(!q.empty()){
-                    coord now =q.front();q.pop();
-                    for(int k = 0 ; k<4;k++){
-                        int y = now.y+dy[k], x = now.x+dx[k];
-                        if(y<0||x<0||y>=N||x>=N)
-                            continue;
-                        if(v[y][x]>n && visited[y][x]==0){
-                            visited[y][x]=1;
-                            q.push({y,x});
-                        }
+queue<Node> q;
+int rfind(int n) {
+    int ans = 0;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (arr[i][j] > n && visited[i][j] == 0) {
+                visited[i][j] = 1;
+                ans++;
+                q.push({ i,j });
+                while (!q.empty()) {
+                    Node now = q.front();
+                    q.pop();
+                    for (int k = 0; k < 4; k++) {
+                        int nexty = now.y + dy[k];
+                        int nextx = now.x + dx[k];
+                        if (nexty < 0 || nextx < 0 || nextx >= N || nexty >= N) continue;
+                        if (arr[nexty][nextx] <= n || visited[nexty][nextx] != 0) continue;
+                        visited[nexty][nextx] = 1;
+                        q.push({ nexty,nextx });
                     }
                 }
+                
             }
         }
     }
-    
-    return cnt;
+    return ans;
 }
-
 int main() {
-    ios::sync_with_stdio(false); 
-    cin.tie(NULL);
-    int N;
-    cin>>N;
-    vector<vector<int>> v(N);
-    for(int i=0;i<N;i++){
-        v[i].resize(N);
-        for(int j=0;j<N;j++)
-            cin>>v[i][j];
+    cin >> N;
+    int mx = 0;
+    //입력
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            cin >> arr[i][j];
+            if (arr[i][j] > mx) {
+                mx = arr[i][j];
+            }
+        }
     }
-    int ans = 0;
-    for(int i = 0 ; i <= 100; i++){
-        ans = max(ans, bfs(v,i));
+    int temp = 0;
+    
+    for (int i = 0; i < mx; i++) {
+        //visited 초기화
+        for (int j = 0; j < N; j++) {
+            for (int k = 0; k < N; k++) {
+                visited[j][k] = 0;
+            }
+        }
+        int value = rfind(i);
+        temp = max(temp, value);
     }
-    cout<<ans;
+    cout << temp;
 }
-

@@ -19,11 +19,5 @@ int main(){
             }
         }
     }
-    int ans = 0;
-    for(auto a: v){
-        for(auto b: a){
-            ans = max(ans, b);
-        }
-    }
-    cout<<ans;
+    cout<<v[n][m];
 }

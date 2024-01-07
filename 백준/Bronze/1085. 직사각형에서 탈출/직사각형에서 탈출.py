@@ -1,0 +1,1 @@
+print((lambda x:min([abs(x[0]-x[2]),abs(x[1]-x[3]),x[0],x[1]]))(list(map(int,input().split()))))

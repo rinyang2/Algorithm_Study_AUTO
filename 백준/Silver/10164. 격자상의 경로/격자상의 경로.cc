@@ -8,10 +8,10 @@ int main() {
 	ios::sync_with_stdio(0); cin.tie(0);
 	int N,M,O;
 	cin>>N>>M>>O;
-	vector<vector<int>>v(20);
+	vector<vector<long long>>v(50);
 	v[0]={1};
 	v[1]={1,1};
-	for(int i = 2; i<20; i++){
+	for(int i = 2; i<50; i++){
 		v[i].push_back(1);
 		for(int j = 0;j<v[i-1].size()-1;j++){
 			v[i].push_back(v[i-1][j]+v[i-1][j+1]);

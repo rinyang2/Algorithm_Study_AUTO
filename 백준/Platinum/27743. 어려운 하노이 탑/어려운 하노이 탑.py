@@ -9,4 +9,4 @@ def pow_modulo(a, b, c):
         temp = (temp * a) % c
     return temp
 
-print(pow_modulo(2,N,MOD)-1 if M==1 else ((pow_modulo(2,N+1,MOD)+MOD-2)*M+MOD+1)%MOD)
+print(pow_modulo(2,N,MOD)-1 if M==1 else ((pow_modulo(2,N+1,MOD)+MOD-2)*M+MOD-1)%MOD)

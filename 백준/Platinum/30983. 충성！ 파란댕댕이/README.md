@@ -18,7 +18,7 @@
 
 <p>파댕이의 즐거운 대학생활은 순식간에 지나가고, 입영일이 되어 파댕이는 입대를 하게 되었다. 파댕이는 너무 슬프다.</p>
 
-<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/6af93a30-9785-4ea9-a67d-13406da4e7a2/-/preview/" style="height: 221px; width: 256px;"></p>
+<p style="text-align: center;"><img alt="" src="" style="height: 221px; width: 256px;"></p>
 
 <p>힘든 훈련소 생활을 끝내고, 파댕이는 사단 본부에 배치받았다. </p>
 

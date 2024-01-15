@@ -1,0 +1,1 @@
+print(*[(lambda x:x[1][:int(x[0])-1]+x[1][int(x[0]):])(list(input().split()))for _ in range(int(input()))],sep='\n')

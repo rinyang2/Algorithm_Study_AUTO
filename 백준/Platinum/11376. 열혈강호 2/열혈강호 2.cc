@@ -1,3 +1,6 @@
+#pragma GCC optimize("O3")
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("unroll-loops")
 #include<iostream>
 #include<vector>
 #include<algorithm>
@@ -21,8 +24,8 @@ int main() {
 	int N, M;
 	cin>>N>>M;
 	vector<vector<int>> jobs(2*N+1);
-	vector<int> assign(1001);
-	for(int i = 1; i<= N; i++){
+	vector<int> assign(2001);
+	for(register int i = 1; i<= N; i++){
 		int n;
 		cin>>n;
 		while(n--){
@@ -33,7 +36,7 @@ int main() {
 		}
 	}
 	int cnt=0;
-	for(int i = 1; i<=N*2; i++){
+	for(register int i = 1; i<=N*2; i++){
 		vector<bool> done(2001);
 		if(dfs(i,jobs,done,assign)) cnt++;
 	}
